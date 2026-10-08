@@ -590,38 +590,38 @@ todo-fullstack/
 
 ## Back-end
 
-- [ ] Proyecto Maven.
-- [ ] Spring Boot.
-- [ ] Entidad JPA.
-- [ ] Repository.
-- [ ] Service.
-- [ ] REST Controller.
-- [ ] DTOs.
-- [ ] Manejo de errores.
-- [ ] PostgreSQL ejecutándose desde la imagen oficial de Docker.
-- [ ] Pruebas unitarias.
-- [ ] Reporte JaCoCo.
+- [X] Proyecto Maven.
+- [X] Spring Boot.
+- [X] Entidad JPA.
+- [X] Repository.
+- [X] Service.
+- [X] REST Controller.
+- [X] DTOs.
+- [X] Manejo de errores.
+- [X] PostgreSQL ejecutándose desde la imagen oficial de Docker.
+- [X] Pruebas unitarias.
+- [X] Reporte JaCoCo.
 
 ## Front-end
 
-- [ ] React.
-- [ ] Vite.
-- [ ] TaskForm.
-- [ ] TaskList.
-- [ ] Edición.
-- [ ] Eliminación.
-- [ ] Cambio de estado.
-- [ ] Consumo REST.
-- [ ] useState.
-- [ ] useEffect.
-- [ ] Pruebas unitarias.
+- [X] React.
+- [X] Vite.
+- [X] TaskForm.
+- [X] TaskList.
+- [X] Edición.
+- [X] Eliminación.
+- [X] Cambio de estado.
+- [X] Consumo REST.
+- [X] useState.
+- [X] useEffect.
+- [X] Pruebas unitarias.
 
 ## Integración
 
-- [ ] React consume Spring Boot.
-- [ ] Spring Boot persiste en PostgreSQL.
-- [ ] CRUD completo desde la interfaz.
-- [ ] Docker ejecuta PostgreSQL.
+- [X] React consume Spring Boot.
+- [X] Spring Boot persiste en PostgreSQL.
+- [X] CRUD completo desde la interfaz.
+- [X] Docker ejecuta PostgreSQL.
 
 ## Bono
 
@@ -640,147 +640,171 @@ todo-fullstack/
 
 # 60. Informe de resultados
 
-Al finalizar el laboratorio, el equipo deberá entregar un **informe corto en formato Markdown o PDF** dentro del repositorio.
-
-Ubicación sugerida:
+Ubicación:
 
 ```text
 docs/
 └── informe-laboratorio.md
 ```
 
-El informe debe contener:
+1. Integrantes del equipo
+2. Enlace al repositorio
+3. Descripción breve de la solución implementada
+* Aplicación **ToDo** full-stack para gestionar tareas (título, descripción, prioridad, estado y fecha límite). El back-end es una API REST en Spring Boot con persistencia en PostgreSQL (ejecutado en Docker). El front-end es una SPA en React (Vite) que consume la API. Permite crear, listar, editar, cambiar de estado y eliminar tareas, e incluye pruebas unitarias en ambas capas.
 
-1. Integrantes del equipo.
-2. Enlace al repositorio.
-3. Descripción breve de la solución implementada.
-4. Arquitectura final de la aplicación.
-5. Evidencias principales de funcionamiento.
-6. Resultados de las pruebas.
-7. Respuestas a las preguntas de análisis.
-8. Enlace al video de demostración.
+## 4. Arquitectura final de la aplicación
+
+```text
+React (Vite, :5173)
+   ↓  HTTP / JSON
+API REST (Spring Boot, :8080)
+   ↓
+Controller → Service → Repository
+   ↓
+JPA / Hibernate
+   ↓
+PostgreSQL (Docker, volumen persistente)
+```
+
+5. Evidencias principales de funcionamiento
+6. Resultados de las pruebas
+7. Respuestas a las preguntas de análisis
+8. Enlace al video de demostración
 
 ---
 
 # 61. Preguntas de análisis
 
-Las siguientes preguntas deben responderse con base en la solución realmente implementada.
-
-No se busca copiar definiciones. Las respuestas deben explicar **cómo se aplicó cada concepto dentro de la aplicación ToDo**.
-
 ## Arquitectura
 
-1. Explique qué sucede desde el momento en que el usuario presiona **Guardar tarea** en React hasta que la tarea queda almacenada en PostgreSQL.
+**1. Explique qué sucede desde el momento en que el usuario presiona Guardar tarea en React hasta que la tarea queda almacenada en PostgreSQL.**
 
-2. ¿Qué responsabilidad tiene cada una de estas capas en su implementación?
+`TaskForm` toma los datos del formulario y llama a `onSubmit`. `TasksPage` ejecuta `addTask` del hook `useTasks`, que llama a `createTask` en `taskApi.js`. Esta función hace un `fetch` POST con el JSON a `/api/v1/tasks`. El `TaskController` recibe el `TaskRequest`, lo valida y se lo pasa al `TaskService`. El Service aplica la lógica de negocio y usa el `TaskRepository`, que mediante JPA/Hibernate genera el `INSERT` en PostgreSQL. La respuesta (`TaskResponse`) vuelve por el mismo camino y el front recarga la lista.
 
-```text
-Controller
-Service
-Repository
-Entity
-DTO
-```
+**2. ¿Qué responsabilidad tiene cada una de estas capas en su implementación?**
 
-3. ¿Por qué el Front-end no se conecta directamente a PostgreSQL?
+- **Controller:** recibe las peticiones HTTP, valida la entrada y devuelve la respuesta con el código HTTP adecuado.
+- **Service:** contiene la lógica de negocio (por ejemplo, estado inicial `PENDING`, errores si la tarea no existe) y convierte entre DTO y Entity.
+- **Repository:** accede a la base de datos (`JpaRepository`).
+- **Entity:** representa la tabla `tasks` mapeada con JPA.
+- **DTO:** define los datos que entran (`TaskRequest`) y salen (`TaskResponse`) de la API, sin exponer la entidad.
 
-4. ¿Qué problema tendría la aplicación si el Controller accediera directamente al Repository y además implementara allí la lógica de negocio?
+**3. ¿Por qué el Front-end no se conecta directamente a PostgreSQL?**
 
----
+Por seguridad: tendría que exponer credenciales y la base de datos en el navegador. Además, se saltaría la lógica de negocio y las validaciones, y quedaría acoplado a la base de datos. La API es el único punto de acceso controlado a los datos.
+
+**4. ¿Qué problema tendría la aplicación si el Controller accediera directamente al Repository y además implementara allí la lógica de negocio?**
+
+Se mezclarían responsabilidades: el Controller quedaría grande, difícil de mantener y de probar, y la lógica no se podría reutilizar. Cualquier cambio en reglas o en la base de datos afectaría la capa web, y las pruebas unitarias serían más complicadas.
 
 ## Persistencia
 
-5. ¿Cómo se relaciona `TaskEntity` con la tabla `tasks` de PostgreSQL?
+**5. ¿Cómo se relaciona `TaskEntity` con la tabla `tasks` de PostgreSQL?**
 
-6. ¿Qué papel cumplen JPA, Hibernate y Spring Data JPA dentro de la solución?
+Con `@Entity` y `@Table(name = "tasks")`. Cada atributo se mapea a una columna (`@Column`), el `id` es la llave primaria (`@Id`, `@GeneratedValue`) y cada objeto `TaskEntity` representa una fila de la tabla.
 
-7. ¿Qué operaciones del CRUD proporciona `JpaRepository` sin necesidad de implementarlas manualmente?
+**6. ¿Qué papel cumplen JPA, Hibernate y Spring Data JPA dentro de la solución?**
 
-8. Explique por qué se utilizó:
+- **JPA:** es la especificación estándar para mapear objetos a tablas.
+- **Hibernate:** es la implementación de JPA; genera y ejecuta el SQL.
+- **Spring Data JPA:** simplifica el acceso a datos creando automáticamente la implementación del repositorio a partir de la interfaz.
 
-```properties
-spring.jpa.hibernate.ddl-auto=validate
-```
+**7. ¿Qué operaciones del CRUD proporciona `JpaRepository` sin necesidad de implementarlas manualmente?**
 
-en lugar de permitir que Hibernate cree automáticamente toda la estructura de la base de datos.
+`save` (crear y actualizar), `findById`, `findAll`, `deleteById`, `delete`, `existsById` y `count`, además de paginación y ordenamiento.
 
----
+**8. Explique por qué se utilizó `spring.jpa.hibernate.ddl-auto=validate` en lugar de permitir que Hibernate cree automáticamente toda la estructura de la base de datos.**
+
+Porque el esquema se controla con scripts SQL versionados y Hibernate solo verifica que las entidades coincidan con las tablas. Con `create` o `update` podría modificar o borrar estructura sin control, lo que es peligroso fuera de desarrollo y genera diferencias entre equipos.
+Y en este caso, se optó porque la base de datos es la que dirije el desarrollo, es decir, debemos acomodar todo con base en al base de datos y sus reglas.
 
 ## API REST
 
-9. Para cada operación del CRUD indique el método HTTP utilizado y explique por qué es apropiado:
+**9. Para cada operación del CRUD indique el método HTTP utilizado y explique por qué es apropiado.**
 
-```text
-Crear
-Consultar
-Actualizar
-Eliminar
-```
+- **Crear:** `POST /api/v1/tasks`, porque crea un recurso nuevo.
+- **Consultar:** `GET /api/v1/tasks` y `GET /api/v1/tasks/{id}`, porque solo lee datos sin modificarlos.
+- **Actualizar:** `PUT /api/v1/tasks/{id}`, porque reemplaza un recurso existente y es idempotente.
+- **Eliminar:** `DELETE /api/v1/tasks/{id}`, porque elimina el recurso indicado.
 
-10. ¿Cuál es la diferencia entre responder:
+**10. ¿Cuál es la diferencia entre responder 200, 201, 204, 400, 404 y 500?**
 
-```text
-200 OK
-201 Created
-204 No Content
-400 Bad Request
-404 Not Found
-500 Internal Server Error
-```
+- **200 OK:** la petición se procesó correctamente (consultas y actualizaciones).
+- **201 Created:** se creó un recurso nuevo.
+- **204 No Content:** éxito sin cuerpo en la respuesta (por ejemplo, al eliminar).
+- **400 Bad Request:** el cliente envió datos inválidos.
+- **404 Not Found:** el recurso solicitado no existe.
+- **500 Internal Server Error:** error inesperado en el servidor.
 
-11. ¿Qué información intercambian React y Spring Boot y en qué formato se realiza esta comunicación?
+**11. ¿Qué información intercambian React y Spring Boot y en qué formato se realiza esta comunicación?**
 
----
+Intercambian los datos de las tareas (`id`, `title`, `description`, `status`, `priority`, `dueDate`) mediante peticiones HTTP, en formato **JSON**. Las fechas viajan en formato ISO `yyyy-MM-dd`.
 
 ## React
 
-12. ¿Qué responsabilidad tiene `taskApi.js` dentro del Front-end?
+**12. ¿Qué responsabilidad tiene `taskApi.js` dentro del Front-end?**
 
-13. ¿Para qué utilizaron `useState` en la aplicación?
+Centraliza todas las llamadas HTTP a la API (`getTasks`, `createTask`, `updateTask`, `deleteTask`). Así los componentes no conocen la URL ni los detalles de `fetch`, y es fácil de simular en las pruebas.
 
-14. ¿Para qué utilizaron `useEffect`?
+**13. ¿Para qué utilizaron `useState` en la aplicación?**
 
-15. Explique cómo se actualiza la pantalla después de crear, editar o eliminar una tarea.
+Para guardar el estado local: en `useTasks` la lista `tasks`, `loading` y `error`; en `TaskForm` los valores del formulario; y en `TasksPage` la tarea que se está editando.
 
----
+**14. ¿Para qué utilizaron `useEffect`?**
+
+En `useTasks` para cargar las tareas desde la API al montar el componente, y en `TaskForm` para llenar el formulario cuando se selecciona una tarea para editar.
+
+**15. Explique cómo se actualiza la pantalla después de crear, editar o eliminar una tarea.**
+
+Después de cada operación exitosa, el hook llama a `loadTasks()`, que vuelve a pedir la lista a la API y actualiza el estado `tasks` con `setTasks`. Como React vuelve a renderizar al cambiar el estado, la pantalla muestra la información actualizada.
 
 ## Docker y PostgreSQL
 
-16. ¿Qué ventaja tuvo utilizar la imagen oficial de PostgreSQL en Docker en lugar de instalar PostgreSQL directamente en cada computador?
+**16. ¿Qué ventaja tuvo utilizar la imagen oficial de PostgreSQL en Docker en lugar de instalar PostgreSQL directamente en cada computador?**
 
-17. Explique la diferencia entre:
+Todos los integrantes usan la misma versión y configuración sin instalar nada manualmente. Se levanta con un solo comando, no ensucia el sistema operativo y se puede borrar y recrear fácilmente.
 
-```bash
-docker pull
-docker run
-docker stop
-docker start
-docker exec
-```
+**17. Explique la diferencia entre `docker pull`, `docker run`, `docker stop`, `docker start` y `docker exec`.**
 
-18. ¿Por qué se utilizó un volumen Docker para PostgreSQL?
+- **`docker pull`:** descarga una imagen desde el registro.
+- **`docker run`:** crea y arranca un contenedor nuevo a partir de una imagen.
+- **`docker stop`:** detiene un contenedor en ejecución.
+- **`docker start`:** vuelve a iniciar un contenedor ya existente.
+- **`docker exec`:** ejecuta un comando dentro de un contenedor en ejecución (por ejemplo, `psql`).
 
-19. ¿Qué ocurriría con la información almacenada si se elimina el contenedor pero se conserva el volumen?
+**18. ¿Por qué se utilizó un volumen Docker para PostgreSQL?**
 
----
+Para que los datos persistan fuera del ciclo de vida del contenedor. Sin volumen, los datos se perderían al eliminar el contenedor.
+
+**19. ¿Qué ocurriría con la información almacenada si se elimina el contenedor pero se conserva el volumen?**
+
+La información se conserva. Al crear un nuevo contenedor de PostgreSQL y montar el mismo volumen, las tablas y los datos siguen disponibles.
 
 ## Pruebas
 
-20. ¿Por qué las pruebas unitarias del Service no deberían depender de una instancia real de PostgreSQL?
+**20. ¿Por qué las pruebas unitarias del Service no deberían depender de una instancia real de PostgreSQL?**
 
-21. ¿Qué dependencia se simuló con Mockito al probar `TaskService` y por qué?
+Porque una prueba unitaria debe ser rápida, aislada y repetible. Depender de la base de datos la haría lenta, frágil (por datos previos o por la base apagada) y dejaría de probar solo la lógica del Service.
 
-22. ¿Qué dependencia se simuló al probar `TaskController`?
+**21. ¿Qué dependencia se simuló con Mockito al probar `TaskService` y por qué?**
 
-23. Mencione un error que haya sido detectado por una prueba durante el desarrollo y explique cómo fue corregido.
+Se simuló el `TaskRepository`, para controlar lo que devuelve (por ejemplo, tarea existente o vacía) y probar la lógica del Service sin acceder a la base de datos.
 
-24. ¿Qué información proporciona JaCoCo y por qué un porcentaje alto de cobertura no garantiza por sí solo que las pruebas sean buenas?
+**22. ¿Qué dependencia se simuló al probar `TaskController`?**
 
----
+Se simuló el `TaskService` (con `@MockBean` / `@MockitoBean` y `MockMvc`), para probar solo las rutas, los códigos HTTP y la validación del Controller.
+
+**23. Mencione un error que haya sido detectado por una prueba durante el desarrollo y explique cómo fue corregido.**
+
+En la prueba "renderiza tareas" de `TaskList`, la búsqueda `getByText("25/09/2026")` falló porque en `TaskItem` el texto del párrafo es `Fecha: 25/09/2026`. Se corrigió usando una expresión regular (`getByText(/25\/09\/2026/)`), que acepta texto parcial.
+
+**24. ¿Qué información proporciona JaCoCo y por qué un porcentaje alto de cobertura no garantiza por sí solo que las pruebas sean buenas?**
+
+JaCoCo indica qué porcentaje de líneas, ramas y métodos se ejecutaron durante las pruebas. Una cobertura alta solo muestra que el código se ejecutó, no que se verificara correctamente: una prueba sin aserciones o que no cubre casos límite también sube el porcentaje sin detectar errores.
 
 ## Integración
 
-25. Dibuje o incluya un diagrama sencillo del flujo completo:
+**25. Diagrama del flujo completo y explicación.**
 
 ```text
 React
@@ -798,7 +822,7 @@ JPA / Hibernate
 PostgreSQL
 ```
 
-y explique con sus propias palabras cómo se comunican estas partes.
+React envía una petición HTTP con JSON a la API REST. El Controller la recibe, valida los datos y llama al Service. El Service aplica la lógica de negocio y pide al Repository guardar o consultar. Spring Data JPA, con Hibernate, traduce esas operaciones a SQL y las ejecuta en PostgreSQL. La respuesta recorre el camino inverso: la base de datos devuelve los datos, el Service y el Controller los convierten en un `TaskResponse` y React los muestra en pantalla.
 
 ---
 
