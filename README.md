@@ -287,6 +287,8 @@ y permitir el origen:
 http://localhost:5173
 ```
 
+![p12_cors.png](docs/evidence/p12_cors.png)
+
 ---
 
 # PARTE 13 · PRUEBAS DEL FRONT-END
