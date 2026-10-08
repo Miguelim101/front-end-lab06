@@ -301,14 +301,28 @@ Utilizar:
 Vitest
 React Testing Library
 ```
+![p13_frameworks_intalation.png](docs/evidence/p13_frameworks_intalation.png)
 
 Crear:
+
+![p13_initial_npm_tests.png](docs/evidence/p13_initial_npm_tests.png)
 
 ```text
 TaskForm.test.jsx
 TaskList.test.jsx
 TasksPage.test.jsx
 ```
+#### SetupTests
+
+![p13_setupTests.png](docs/evidence/p13_setupTests.png)
+
+#### Package.json
+
+![p13_package.json.png](docs/evidence/p13_package.json.png)
+
+#### Vite.config.js
+
+![p13_package.json.png](docs/evidence/p13_vite.config.js.png)
 
 ---
 
@@ -341,6 +355,8 @@ Muestra error cuando falla la API.
 ```
 
 Las llamadas HTTP deben ser simuladas.
+
+![p13_tests_ok.png](docs/evidence/p13_tests_ok.png)
 
 ---
 
