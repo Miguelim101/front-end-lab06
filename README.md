@@ -374,6 +374,8 @@ Verificar:
 docker ps
 ```
 
+![p14_docker_sql.png](docs/evidence/p14_docker_sql.png)
+
 ---
 
 # 49. Ejecutar Back-end
@@ -383,6 +385,8 @@ cd backend
 mvn spring-boot:run
 ```
 
+![p14_docker_sql.png](docs/evidence/p14_docker_sql.png)
+
 ---
 
 # 50. Ejecutar Front-end
@@ -391,6 +395,8 @@ mvn spring-boot:run
 cd frontend
 npm run dev
 ```
+
+![p14_docker_sql.png](docs/evidence/p14_docker_sql.png)
 
 ---
 
@@ -427,6 +433,29 @@ JPA / Hibernate
    ↓
 PostgreSQL
 ```
+## React Steps (internal Flow)
+
+### Step 1
+
+![p14_step1_create.png](docs/evidence/p14_step1_create.png)
+
+### Step 2
+
+![p14_step2_findTasks.png](docs/evidence/p14_step2_findTasks.png)
+
+### Step 3
+
+![p14_step3_edit.png](docs/evidence/p14_step3_edit.png)
+
+### Step 4
+
+![p14_step4_status1.png](docs/evidence/p14_step4_status1.png)
+![p14_step4_status2.png](docs/evidence/p14_step4_status2.png)
+
+### Step 5
+
+![p14_p14_step5_delete1.png](docs/evidence/p14_step5_delete1.png)
+![p14_p14_step5_delete2.png](docs/evidence/p14_step5_delete2.png)
 
 ---
 
