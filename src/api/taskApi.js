@@ -13,6 +13,11 @@ export async function getTasks() {
     return request();
 }
 
+// BONUS calendario: tareas con dueDate entre from y to (formato yyyy-MM-dd, ambos incluidos)
+export async function getTasksByRange(from, to) {
+    return request(`?from=${from}&to=${to}`);
+}
+
 export async function getTask(id) {
     return request(`/${id}`);
 }

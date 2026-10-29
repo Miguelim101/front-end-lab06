@@ -2,6 +2,7 @@ import { useState } from "react";
 import useTasks from "../hooks/useTasks";
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
+import TaskCalendar from "../components/TaskCalendar";
 
 export default function TasksPage() {
   const { tasks, loading, error, addTask, editTask, removeTask, changeStatus } = useTasks();
@@ -23,6 +24,9 @@ export default function TasksPage() {
       <h2 className="section">TAREAS</h2>
       {loading && <p className="empty">Cargando...</p>}
       <TaskList tasks={tasks} onEdit={setEditing} onStatus={changeStatus} onDelete={removeTask} />
+
+      <h2 className="section">CALENDARIO</h2>
+      <TaskCalendar refreshKey={tasks} onSelect={setEditing} />
     </main>
   );
 }

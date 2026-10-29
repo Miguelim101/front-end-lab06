@@ -70,7 +70,7 @@ Aplicación:
 http://localhost:5173
 ```
 
-![p11_npm1.png](docs/evidence/p11_npm1.png)
+![p11_npm1.png](evidence/p11_npm1.png)
 
 ---
 
@@ -103,7 +103,7 @@ front-end-lab06/
 ```
 #### Scaffolding Front-End evidence
 
-![p11_scaffolding.png](docs/evidence/p11_scaffolding.png)
+![p11_scaffolding.png](evidence/p11_scaffolding.png)
 
 ---
 
@@ -189,7 +189,7 @@ Fecha: 27/09/2026
 ```
 Hasta esta parte ya hemos creado gran parte del front-end, y para visualizarlo rápidamente creamos un cóidgo temporal para el useTask.js y poder visualizar. Sin embargo, en el próximo paso haremos la versión correcta y mejoraremos un poco la interfaz.
 
-![p11_temp_interface.png](docs/evidence/p11_temp_interface.png)
+![p11_temp_interface.png](evidence/p11_temp_interface.png)
 
 ---
 
@@ -287,7 +287,7 @@ y permitir el origen:
 http://localhost:5173
 ```
 
-![p12_cors.png](docs/evidence/p12_cors.png)
+![p12_cors.png](evidence/p12_cors.png)
 
 ---
 
@@ -301,11 +301,11 @@ Utilizar:
 Vitest
 React Testing Library
 ```
-![p13_frameworks_intalation.png](docs/evidence/p13_frameworks_intalation.png)
+![p13_frameworks_intalation.png](evidence/p13_frameworks_intalation.png)
 
 Crear:
 
-![p13_initial_npm_tests.png](docs/evidence/p13_initial_npm_tests.png)
+![p13_initial_npm_tests.png](evidence/p13_initial_npm_tests.png)
 
 ```text
 TaskForm.test.jsx
@@ -314,15 +314,15 @@ TasksPage.test.jsx
 ```
 #### SetupTests
 
-![p13_setupTests.png](docs/evidence/p13_setupTests.png)
+![p13_setupTests.png](evidence/p13_setupTests.png)
 
 #### Package.json
 
-![p13_package.json.png](docs/evidence/p13_package.json.png)
+![p13_package.json.png](evidence/p13_package.json.png)
 
 #### Vite.config.js
 
-![p13_package.json.png](docs/evidence/p13_vite.config.js.png)
+![p13_package.json.png](evidence/p13_vite.config.js.png)
 
 ---
 
@@ -356,7 +356,7 @@ Muestra error cuando falla la API.
 
 Las llamadas HTTP deben ser simuladas.
 
-![p13_tests_ok.png](docs/evidence/p13_tests_ok.png)
+![p13_tests_ok.png](evidence/p13_tests_ok.png)
 
 ---
 
@@ -374,7 +374,7 @@ Verificar:
 docker ps
 ```
 
-![p14_docker_sql.png](docs/evidence/p14_docker_sql.png)
+![p14_docker_sql.png](evidence/p14_docker_sql.png)
 
 ---
 
@@ -385,7 +385,7 @@ cd backend
 mvn spring-boot:run
 ```
 
-![p14_docker_sql.png](docs/evidence/p14_docker_sql.png)
+![p14_docker_sql.png](evidence/p14_docker_sql.png)
 
 ---
 
@@ -396,7 +396,7 @@ cd frontend
 npm run dev
 ```
 
-![p14_docker_sql.png](docs/evidence/p14_docker_sql.png)
+![p14_docker_sql.png](evidence/p14_docker_sql.png)
 
 ---
 
@@ -437,25 +437,25 @@ PostgreSQL
 
 ### Step 1
 
-![p14_step1_create.png](docs/evidence/p14_step1_create.png)
+![p14_step1_create.png](evidence/p14_step1_create.png)
 
 ### Step 2
 
-![p14_step2_findTasks.png](docs/evidence/p14_step2_findTasks.png)
+![p14_step2_findTasks.png](evidence/p14_step2_findTasks.png)
 
 ### Step 3
 
-![p14_step3_edit.png](docs/evidence/p14_step3_edit.png)
+![p14_step3_edit.png](evidence/p14_step3_edit.png)
 
 ### Step 4
 
-![p14_step4_status1.png](docs/evidence/p14_step4_status1.png)
-![p14_step4_status2.png](docs/evidence/p14_step4_status2.png)
+![p14_step4_status1.png](evidence/p14_step4_status1.png)
+![p14_step4_status2.png](evidence/p14_step4_status2.png)
 
 ### Step 5
 
-![p14_p14_step5_delete1.png](docs/evidence/p14_step5_delete1.png)
-![p14_p14_step5_delete2.png](docs/evidence/p14_step5_delete2.png)
+![p14_p14_step5_delete1.png](evidence/p14_step5_delete1.png)
+![p14_p14_step5_delete2.png](evidence/p14_step5_delete2.png)
 
 ---
 
@@ -538,6 +538,7 @@ Permite cambiar de semana.
 
 No muestra tareas que pertenecen a otra semana.
 ```
+![p15_calendar.png](evidence/p15_calendar.png)
 
 ---
 
@@ -625,10 +626,10 @@ todo-fullstack/
 
 ## Bono
 
-- [ ] Vista semanal.
-- [ ] Navegación entre semanas.
-- [ ] Tareas reales desde la API.
-- [ ] Pruebas del calendario.
+- [X] Vista semanal.
+- [X] Navegación entre semanas.
+- [X] Tareas reales desde la API.
+- [X] Pruebas del calendario.
 
 ---
 
@@ -974,7 +975,7 @@ Ejemplo:
 npm test
 ```
 
-o el comando definido por el equipo en `package.json`.
+o el comando definido por el equipo en `../../package.json`.
 
 Mostrar que las pruebas terminan correctamente.
 
