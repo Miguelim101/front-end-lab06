@@ -85,8 +85,6 @@ input:focus, select:focus { outline: 2px solid var(--primary); border-color: tra
   .calendar-day { min-height: 0; }
 }
 /* Autenticación (Lab 7) */
-.topbar { display: flex; justify-content: flex-end; gap: .5rem; max-width: 680px; margin: 0 auto;
-  padding: 1rem 1rem 0; }
 .auth { max-width: 420px; margin: 0 auto; }
 .auth h2 { text-align: center; letter-spacing: .15rem; color: var(--muted); }
 .auth .actions { justify-content: center; }

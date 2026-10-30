@@ -1,8 +1,11 @@
+import { authHeader } from "./session";
+
 const API_URL = "http://localhost:8080/api/v1/tasks";
 
 async function request(path = "", options = {}) {
     const res = await fetch(API_URL + path, {
-        headers: { "Content-Type": "application/json" },
+        // LAB 7: toda petición de tareas viaja con Authorization: Bearer <JWT>
+        headers: { "Content-Type": "application/json", ...authHeader() },
         ...options,
     });
     if (!res.ok) {
