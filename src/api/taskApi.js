@@ -1,10 +1,15 @@
+import { authHeader, notifyUnauthorized } from "./session";
+
 const API_URL = "http://localhost:8080/api/v1/tasks";
 
 async function request(path = "", options = {}) {
     const res = await fetch(API_URL + path, {
-        headers: { "Content-Type": "application/json" },
+        // LAB 7: toda petición de tareas viaja con Authorization: Bearer <JWT>
+        headers: { "Content-Type": "application/json", ...authHeader() },
         ...options,
     });
+    // HU-SEG-06: 401 en un recurso protegido = sesión vencida o token inválido -> se cierra la sesión
+    if (res.status === 401) notifyUnauthorized();
     if (!res.ok) {
         const body = await res.json().catch(() => null);
         throw new Error(body?.message ?? `Error HTTP ${res.status}`);

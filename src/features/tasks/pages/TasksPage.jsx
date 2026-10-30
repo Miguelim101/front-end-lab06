@@ -21,7 +21,7 @@ export default function TasksPage() {
 
       <TaskForm initial={editing} onSubmit={handleSubmit} onCancel={() => setEditing(null)} />
 
-      <h2 className="section">TAREAS</h2>
+      <h2 className="section">MIS TAREAS</h2>
       {loading && <p className="empty">Cargando...</p>}
       <TaskList tasks={tasks} onEdit={setEditing} onStatus={changeStatus} onDelete={removeTask} />
 
