@@ -18,3 +18,16 @@ export function clearToken() {
 export function authHeader() {
     return accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
 }
+
+// HU-SEG-06: quién reacciona cuando una petición protegida responde 401 (token expirado o inválido).
+// AuthContext registra aquí la limpieza de la sesión y el regreso al inicio de sesión.
+let onUnauthorized = null;
+
+export function setUnauthorizedHandler(handler) {
+    onUnauthorized = handler;
+}
+
+export function notifyUnauthorized() {
+    clearToken();
+    onUnauthorized?.();
+}

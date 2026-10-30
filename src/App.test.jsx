@@ -67,4 +67,57 @@ describe("App · sesión", () => {
     await userEvent.click(screen.getByRole("button", { name: /inicia sesión/i }));
     expect(screen.getByText("INICIAR SESIÓN")).toBeInTheDocument();
   });
+
+  // ---------- HU-SEG-06 ----------
+
+  it("debería mostrar el nombre del usuario y el botón Cerrar sesión", async () => {
+    authApi.login.mockResolvedValue({ tokenType: "Bearer", accessToken: "a.b.c", expiresIn: 1800 });
+    authApi.me.mockResolvedValue({ id: 1, name: "Ana Pérez", email: "ana@example.com", role: "USER" });
+    render(<App />);
+
+    await loginAs();
+
+    expect(await screen.findByText("Ana Pérez")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /cerrar sesión/i })).toBeInTheDocument();
+  });
+
+  it("PT-16 · cerrar sesión debería borrar el token, ocultar las tareas y mostrar el inicio de sesión", async () => {
+    authApi.login.mockResolvedValue({ tokenType: "Bearer", accessToken: "a.b.c", expiresIn: 1800 });
+    authApi.me.mockResolvedValue({ id: 1, name: "Ana Pérez", email: "ana@example.com", role: "USER" });
+    render(<App />);
+    await loginAs();
+    expect(await screen.findByText("Entregar laboratorio")).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("button", { name: /cerrar sesión/i }));
+
+    expect(screen.getByText("INICIAR SESIÓN")).toBeInTheDocument();
+    expect(screen.queryByText("Entregar laboratorio")).not.toBeInTheDocument();
+    expect(screen.queryByText("Ana Pérez")).not.toBeInTheDocument();
+    expect(getToken()).toBeNull();
+  });
+
+  it("PT-18 · otro usuario que inicia sesión solo debería ver sus propias tareas", async () => {
+    const luisTasks = [
+      { id: 7, title: "Tarea privada de Luis", status: "PENDING", priority: "LOW", dueDate: "2026-10-26" },
+    ];
+    authApi.login
+      .mockResolvedValueOnce({ tokenType: "Bearer", accessToken: "token.de.ana", expiresIn: 1800 })
+      .mockResolvedValueOnce({ tokenType: "Bearer", accessToken: "token.de.luis", expiresIn: 1800 });
+    authApi.me
+      .mockResolvedValueOnce({ id: 1, name: "Ana Pérez", email: "ana@example.com", role: "USER" })
+      .mockResolvedValueOnce({ id: 2, name: "Luis Gómez", email: "luis@example.com", role: "USER" });
+    taskApi.getTasks.mockResolvedValueOnce(anaTasks).mockResolvedValueOnce(luisTasks);
+    render(<App />);
+
+    await loginAs("ana@example.com");
+    expect(await screen.findByText("Entregar laboratorio")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: /cerrar sesión/i }));
+
+    await loginAs("luis@example.com");
+
+    expect(await screen.findByText("Tarea privada de Luis")).toBeInTheDocument();
+    expect(screen.queryByText("Entregar laboratorio")).not.toBeInTheDocument();
+    expect(screen.getByText("Luis Gómez")).toBeInTheDocument();
+    expect(getToken()).toBe("token.de.luis");
+  });
 });

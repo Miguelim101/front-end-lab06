@@ -93,3 +93,6 @@ input:focus, select:focus { outline: 2px solid var(--primary); border-color: tra
   font-weight: 600; cursor: pointer; text-decoration: underline; }
 .success { background: #d1fae5; color: #065f46; padding: .7rem 1rem; border-radius: 8px; }
 .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.userbar { display: flex; justify-content: flex-end; align-items: center; gap: .8rem;
+  max-width: 680px; margin: 0 auto; padding: 1rem 1rem 0; }
+.userbar-name { font-weight: 700; color: var(--text); }
