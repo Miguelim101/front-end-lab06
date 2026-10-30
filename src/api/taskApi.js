@@ -5,7 +5,10 @@ async function request(path = "", options = {}) {
         headers: { "Content-Type": "application/json" },
         ...options,
     });
-    if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
+    if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.message ?? `Error HTTP ${res.status}`);
+    }
     return res.status === 204 ? null : res.json();
 }
 

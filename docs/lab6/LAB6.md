@@ -680,7 +680,7 @@ PostgreSQL (Docker, volumen persistente)
 
 **1. Explique qué sucede desde el momento en que el usuario presiona Guardar tarea en React hasta que la tarea queda almacenada en PostgreSQL.**
 
-`TaskForm` toma los datos del formulario y llama a `onSubmit`. `TasksPage` ejecuta `addTask` del hook `useTasks`, que llama a `createTask` en `taskApi.js`. Esta función hace un `fetch` POST con el JSON a `/api/v1/tasks`. El `TaskController` recibe el `TaskRequest`, lo valida y se lo pasa al `TaskService`. El Service aplica la lógica de negocio y usa el `TaskRepository`, que mediante JPA/Hibernate genera el `INSERT` en PostgreSQL. La respuesta (`TaskResponse`) vuelve por el mismo camino y el front recarga la lista.
+`TaskForm` toma los datos del formulario y llama a `onSubmit`. `TasksPage` ejecuta `addTask` del hook `useTasks`, que llama a `createTask` en `taskApi.js`. Esta función hace un `fetch` POST con el JSON a `/api/v1/tasks`. El `TaskController` recibe el `TaskCreateRequest`, lo valida y se lo pasa al `TaskService`. El Service aplica la lógica de negocio y usa el `TaskRepository`, que mediante JPA/Hibernate genera el `INSERT` en PostgreSQL. La respuesta (`TaskResponse`) vuelve por el mismo camino y el front recarga la lista.
 
 **2. ¿Qué responsabilidad tiene cada una de estas capas en su implementación?**
 
@@ -688,7 +688,7 @@ PostgreSQL (Docker, volumen persistente)
 - **Service:** contiene la lógica de negocio (por ejemplo, estado inicial `PENDING`, errores si la tarea no existe) y convierte entre DTO y Entity.
 - **Repository:** accede a la base de datos (`JpaRepository`).
 - **Entity:** representa la tabla `tasks` mapeada con JPA.
-- **DTO:** define los datos que entran (`TaskRequest`) y salen (`TaskResponse`) de la API, sin exponer la entidad.
+- **DTO:** define los datos que entran (`TaskCreateRequest` al crear y `TaskUpdateRequest` al editar) y salen (`TaskResponse`) de la API, sin exponer la entidad.
 
 **3. ¿Por qué el Front-end no se conecta directamente a PostgreSQL?**
 
