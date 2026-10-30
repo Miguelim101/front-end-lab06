@@ -6,8 +6,9 @@ import "./index.css";
 
 // Sin sesión: login / registro. Con sesión: tareas (las peticiones llevan el JWT)
 function AppContent() {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <TasksPage /> : <AuthPage />;
+  const { user, isAuthenticated } = useAuth();
+  // key = id del usuario: si cambia la sesión, TasksPage se monta de nuevo sin estado del usuario anterior
+  return isAuthenticated ? <TasksPage key={user.id} /> : <AuthPage />;
 }
 
 export default function App() {
